@@ -1,11 +1,13 @@
 import turtle
 import os
-import time
+import math
+import random
 
 # Podesavanje ekrana
 wn = turtle.Screen()
 wn.bgcolor('Black')
 wn.title('Space Invaders')
+wn.bgpic('giphy (1).gif')
 
 # Podesavanje bordera
 border_pen = turtle.Turtle()
@@ -20,6 +22,19 @@ for side in range(4):
     border_pen.lt(90)
 border_pen.hideturtle()
 
+# Score 0
+score = 0
+
+# Napisi score
+score_pen = turtle.Turtle()
+score_pen.speed(0)
+score_pen.color('white')
+score_pen.penup()
+score_pen.setposition(-290, 280)
+scorestring = 'Score: %s' %score
+score_pen.write(scorestring, False, align = 'left', font=('Arial', 14, 'normal'))
+score_pen.hideturtle()
+
 # Pravimo igraca kornjacu
 player = turtle.Turtle()
 player.color('blue')
@@ -31,13 +46,23 @@ player.setheading(90)
 
 player_speed = 15
 
-# Pravimo neprijatelja
-enemy = turtle.Turtle()
-enemy.color('red')
-enemy.shape('circle')
-enemy.penup()
-enemy.speed(0)
-enemy.setposition(-200, 250)
+number_of_enemies = 5
+
+enemies = []
+
+for i in range(number_of_enemies):
+    enemies.append(turtle.Turtle())
+
+for enemy in enemies:
+
+    # Pravimo neprijatelja
+    enemy.color('red')
+    enemy.shape('circle')
+    enemy.penup()
+    enemy.speed(0)
+    x = random.randint(-200, 200)
+    y = random.randint(100, 250)
+    enemy.setposition(x, y)
 
 enemy_speed = 2
 
@@ -82,6 +107,13 @@ def fire():
         weapon.setposition(x, y)
         weapon.showturtle()
 
+def isCollision(t1, t2):
+    distance = math.sqrt(math.pow(t1.xcor()-t2.xcor(), 2)+math.pow(t1.ycor()-t2.ycor(),2))
+    if distance < 15:
+        return True
+    else:
+        return False
+
 # Pravimo keyboard bindings
 turtle.listen()
 turtle.onkey(move_left, 'Left')
@@ -91,23 +123,42 @@ turtle.onkey(fire, 'space')
 # Main game loop
 while True:
 
-    # Pokretanje neprijatelja
-    x = enemy.xcor()
-    x += enemy_speed
-    enemy.setx(x)
+    for enemy in enemies:
+        # Pokretanje neprijatelja
+        x = enemy.xcor()
+        x += enemy_speed
+        enemy.setx(x)
 
-    # Pokretanje neprijatelja gore i dole
-    if enemy.xcor() > 280:
-        y = enemy.ycor()
-        y -= 40
-        enemy_speed *= -1
-        enemy.sety(y)
+        # Pokretanje neprijatelja gore i dole
+        if enemy.xcor() > 280:
+            for e in enemies:
+                y = e.ycor()
+                y -= 40
+                e.sety(y)
+            enemy_speed *= -1
 
-    if enemy.xcor() < -280:
-        y = enemy.ycor()
-        y -= 40
-        enemy_speed *= -1
-        enemy.sety(y)
+        if enemy.xcor() < -280:
+            for e in enemies:
+                y = e.ycor()
+                y -= 40
+                e.sety(y)
+            enemy_speed *= -1
+        
+        if isCollision(weapon, enemy):
+            weapon.hideturtle()
+            weapon_state = 'ready'
+            weapon.setposition(0, -400)
+            enemy.setposition(-200, 250)
+            # Score update
+            score += 10
+            scorestring = 'Score: %s' %score
+            score_pen.clear()
+            score_pen.write(scorestring, False, align = 'left', font=('Arial', 14, 'normal'))
+
+        if isCollision(player, enemy):
+            enemy.hideturtle()
+            print('GAME OVER!')
+            break
 
     # Pokretanje metaka
     if weapon_state == 'fire':
