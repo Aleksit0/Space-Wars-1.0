@@ -2,12 +2,20 @@ import turtle
 import os
 import math
 import random
+from playsound import playsound
+import pygame
+
+pygame.init()
+pygame.mixer.init()
+sound = pygame.mixer.Sound('laser27.wav')
+sound.set_volume(0.5)
 
 # Podesavanje ekrana
 wn = turtle.Screen()
-wn.bgcolor('Black')
-wn.title('Space Invaders')
-wn.bgpic('giphy (1).gif')
+wn.bgcolor('black')
+wn.title('Shape Wars')
+wn.bgpic('bg.gif')
+wn.setup(600, 600)
 
 # Podesavanje bordera
 border_pen = turtle.Turtle()
@@ -28,7 +36,7 @@ score = 0
 # Napisi score
 score_pen = turtle.Turtle()
 score_pen.speed(0)
-score_pen.color('white')
+score_pen.color('yellow')
 score_pen.penup()
 score_pen.setposition(-290, 280)
 scorestring = 'Score: %s' %score
@@ -41,7 +49,7 @@ player.color('blue')
 player.shape('triangle')
 player.penup()
 player.speed(0)
-player.setposition(0, -250)
+player.setposition(0, -290)
 player.setheading(90)
 
 player_speed = 15
@@ -101,6 +109,7 @@ def move_right():
 def fire():
     global weapon_state
     if weapon_state == 'ready':
+        sound.play()
         weapon_state = 'fire'
         x = player.xcor()
         y = player.ycor() + 10
@@ -137,7 +146,7 @@ while True:
                 e.sety(y)
             enemy_speed *= -1
 
-        if enemy.xcor() < -280:
+        if enemy.xcor() < -275:
             for e in enemies:
                 y = e.ycor()
                 y -= 40
@@ -153,10 +162,21 @@ while True:
             score += 10
             scorestring = 'Score: %s' %score
             score_pen.clear()
+
             score_pen.write(scorestring, False, align = 'left', font=('Arial', 14, 'normal'))
 
         if isCollision(player, enemy):
+            player.hideturtle()
             enemy.hideturtle()
+            over_pen = turtle.Turtle()
+            over_pen.speed(0)
+            over_pen.color('yellow')
+            over_pen.penup()
+            over_pen.setposition(-200, 320)
+            overstring = 'GAMEOVER - Restart the Game! Score: %s' %score
+            over_pen.write(overstring, False, align = 'center', font=('Arial', 20, 'normal'))
+            over_pen.hideturtle()
+
             print('GAME OVER!')
             break
 
