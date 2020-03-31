@@ -52,7 +52,7 @@ player.color('blue')
 player.shape('triangle')
 player.penup()
 player.speed(0)
-player.setposition(0, -290)
+player.setposition(0, -280)
 player.setheading(90)
 
 player_speed = 15
@@ -172,16 +172,16 @@ while True:
             score_pen.write(scorestring, False, align = 'left', font=('Arial', 14, 'normal'))
 
         if isCollision(player, enemy):
-            player.hideturtle()
-            enemy.hideturtle()
             over_pen = turtle.Turtle()
             over_pen.speed(0)
             over_pen.color('yellow')
             over_pen.penup()
-            over_pen.setposition(0, -290)
+            over_pen.setposition(10, -290)
             overstring = 'GAMEOVER - Restart the Game! Score: %s' %score
             over_pen.write(overstring, False, align = 'center', font=('Arial', 20, 'normal'))
             over_pen.hideturtle()
+            player.hideturtle()
+            enemy.hideturtle()
 
             print('GAME OVER!')
             break
