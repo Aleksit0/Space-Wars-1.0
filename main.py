@@ -8,7 +8,10 @@ import pygame
 pygame.init()
 pygame.mixer.init()
 sound = pygame.mixer.Sound('laser27.wav')
-sound.set_volume(0.5)
+sound.set_volume(0.4)
+
+sound2 = pygame.mixer.Sound('explosion.wav')
+sound2.set_volume(0.5)
 
 # Podesavanje ekrana
 wn = turtle.Screen()
@@ -43,7 +46,7 @@ scorestring = 'Score: %s' %score
 score_pen.write(scorestring, False, align = 'left', font=('Arial', 14, 'normal'))
 score_pen.hideturtle()
 
-# Pravimo igraca kornjacu
+# Pravimo igraca
 player = turtle.Turtle()
 player.color('blue')
 player.shape('triangle')
@@ -144,20 +147,23 @@ while True:
                 y = e.ycor()
                 y -= 40
                 e.sety(y)
-            enemy_speed *= -1
+                enemy_speed *= -1
 
         if enemy.xcor() < -275:
             for e in enemies:
                 y = e.ycor()
                 y -= 40
                 e.sety(y)
-            enemy_speed *= -1
+                enemy_speed *= -1
         
         if isCollision(weapon, enemy):
+            sound2.play()
             weapon.hideturtle()
             weapon_state = 'ready'
             weapon.setposition(0, -400)
-            enemy.setposition(-200, 250)
+            x = random.randint(-200, 200)
+            y = random.randint(100, 250)
+            enemy.setposition(x, y)
             # Score update
             score += 10
             scorestring = 'Score: %s' %score
@@ -172,7 +178,7 @@ while True:
             over_pen.speed(0)
             over_pen.color('yellow')
             over_pen.penup()
-            over_pen.setposition(-200, 320)
+            over_pen.setposition(0, -290)
             overstring = 'GAMEOVER - Restart the Game! Score: %s' %score
             over_pen.write(overstring, False, align = 'center', font=('Arial', 20, 'normal'))
             over_pen.hideturtle()
