@@ -8,7 +8,7 @@ import pygame
 pygame.init()
 pygame.mixer.init()
 sound = pygame.mixer.Sound('laser27.wav')
-sound.set_volume(0.4)
+sound.set_volume(0.3)
 
 sound2 = pygame.mixer.Sound('explosion.wav')
 sound2.set_volume(0.5)
@@ -52,7 +52,7 @@ player.color('blue')
 player.shape('triangle')
 player.penup()
 player.speed(0)
-player.setposition(0, -280)
+player.setposition(0, -250)
 player.setheading(90)
 
 player_speed = 15
@@ -176,7 +176,7 @@ while True:
             over_pen.speed(0)
             over_pen.color('yellow')
             over_pen.penup()
-            over_pen.setposition(10, -290)
+            over_pen.setposition(0, -100)
             overstring = 'GAMEOVER - Restart the Game! Score: %s' %score
             over_pen.write(overstring, False, align = 'center', font=('Arial', 20, 'normal'))
             over_pen.hideturtle()
