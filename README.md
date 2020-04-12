@@ -5,3 +5,4 @@ For any bugs noticed, contact me on my IG profile: alexa.codes!
 
 Note:
 Currently the game is in Alpha version.
+#Here is a little preview of what the game actually looks like.
