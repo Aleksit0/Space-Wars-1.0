@@ -10,6 +10,9 @@ Currently the game is in Alpha version.
 
 # How to run this game?
 1.Downlaod od clone the repo.
+
 2.Navigate to the repo folder.
+
 3.Open terminal (In that folder).
+
 4.Run: python main.py
